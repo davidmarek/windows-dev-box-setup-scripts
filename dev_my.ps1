@@ -27,26 +27,37 @@ executeScript "FileExplorerSettings.ps1";
 executeScript "RemoveDefaultApps.ps1";
 executeScript "CommonDevTools.ps1";
 
-#--- Tools ---
-#--- Installing VS and VS Code with Git
-# See this for install args: https://chocolatey.org/packages/VisualStudio2017Community
-# https://docs.microsoft.com/en-us/visualstudio/install/workload-component-id-vs-community
-# https://docs.microsoft.com/en-us/visualstudio/install/use-command-line-parameters-to-install-visual-studio#list-of-workload-ids-and-component-ids
-# visualstudio2017community
-# visualstudio2017professional
-# visualstudio2017enterprise
+#--- Setup docker and wsl ---
+executeScript "HyperV.ps1";
+RefreshEnv
+executeScript "WSL.ps1";
+RefreshEnv
+executeScript "Docker.ps1";
 
-choco install -y visualstudio2017community --package-parameters="'--add Microsoft.VisualStudio.Component.Git'"
+#--- Setup powershell and azure cli ---
+choco install -y powershell-core
+choco install -y azure-cli
+Install-Module -Force Az
+choco install -y microsoftazurestorageexplorer
+
+#--- Install VS2019 ---
+choco install -y visualstudio2019enterprise --package-parameters="'--add Microsoft.VisualStudio.Component.Git'"
 Update-SessionEnvironment #refreshing env due to Git install
+choco install -y visualstudio2019-workload-azure
+choco install -y visualstudio2019-workload-netcoretools
+choco install -y visualstudio2019-workload-netweb
+choco install -y visualstudio2019-workload-nativecrossplat
+choco install -y visualstudio2019-workload-nativedesktop
 
-#--- UWP Workload and installing Windows Template Studio ---
-choco install -y visualstudio2017-workload-azure
-choco install -y visualstudio2017-workload-universal
-choco install -y visualstudio2017-workload-manageddesktop
-choco install -y visualstudio2017-workload-nativedesktop
-
-executeScript "WindowsTemplateStudio.ps1";
-executeScript "GetUwpSamplesOffGithub.ps1";
+#--- Install dependencies in WSL ---
+Ubuntu1804 run apt install build-essential ninja-build git libblas-dev liblapack-dev
+Ubuntu1804 run apt install apt-transport-https ca-certificates gnupg software-properties-common wget
+Ubuntu1804 run wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+Ubuntu1804 run apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
+Ubuntu1804 run apt-get update
+Ubuntu1804 run apt install cmake
+Ubuntu1804 run curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+Ubuntu1804 run apt install clang-8 clang-tidy-8
 
 #--- reenabling critial items ---
 Enable-UAC
