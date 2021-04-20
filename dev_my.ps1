@@ -35,6 +35,7 @@ RefreshEnv
 executeScript "Docker.ps1";
 
 #--- Setup powershell and azure cli ---
+choco install -y microsoft-windows-terminal
 choco install -y powershell-core
 choco install -y azure-cli
 Install-Module -Force Az
