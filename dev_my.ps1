@@ -42,15 +42,6 @@ Install-Module -Force Az
 choco install -y microsoftazurestorageexplorer
 choco install -y poshgit
 
-#--- Install VS2019 ---
-choco install -y visualstudio2019enterprise --package-parameters="'--add Microsoft.VisualStudio.Component.Git'"
-Update-SessionEnvironment #refreshing env due to Git install
-choco install -y visualstudio2019-workload-azure
-choco install -y visualstudio2019-workload-netcoretools
-choco install -y visualstudio2019-workload-netweb
-choco install -y visualstudio2019-workload-nativecrossplat
-choco install -y visualstudio2019-workload-nativedesktop
-
 #--- Install dependencies in WSL ---
 Ubuntu1804 run apt install build-essential ninja-build git libblas-dev liblapack-dev
 Ubuntu1804 run apt install apt-transport-https ca-certificates gnupg software-properties-common wget
