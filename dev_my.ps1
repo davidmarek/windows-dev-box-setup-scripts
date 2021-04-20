@@ -42,16 +42,6 @@ Install-Module -Force Az
 choco install -y microsoftazurestorageexplorer
 choco install -y poshgit
 
-#--- Install dependencies in WSL ---
-Ubuntu1804 run apt install build-essential ninja-build git libblas-dev liblapack-dev
-Ubuntu1804 run apt install apt-transport-https ca-certificates gnupg software-properties-common wget
-Ubuntu1804 run wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
-Ubuntu1804 run apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
-Ubuntu1804 run apt-get update
-Ubuntu1804 run apt install cmake
-Ubuntu1804 run curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-Ubuntu1804 run apt install clang-8 clang-tidy-8
-
 #--- reenabling critial items ---
 Enable-UAC
 Enable-MicrosoftUpdate
