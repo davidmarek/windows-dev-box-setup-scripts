@@ -39,6 +39,7 @@ choco install -y powershell-core
 choco install -y azure-cli
 Install-Module -Force Az
 choco install -y microsoftazurestorageexplorer
+choco install -y poshgit
 
 #--- Install VS2019 ---
 choco install -y visualstudio2019enterprise --package-parameters="'--add Microsoft.VisualStudio.Component.Git'"
